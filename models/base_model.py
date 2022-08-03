@@ -30,7 +30,7 @@ class BaseModel:
             self.name = kwargs['name']
             self.created_at = datetime.strptime(
                 kwargs['created_at'],
-                '%Y-%m-%dTH:%M:%S.%f'
+                '%Y-%m-%dT%H:%M:%S.%f'
             )
             self.id = kwargs['id']
             self.updated_at = datetime.strptime(
