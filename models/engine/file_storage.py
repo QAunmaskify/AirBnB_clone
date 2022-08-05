@@ -83,9 +83,14 @@ class FileStorage:
                 str_data = r_file.read()
                 dict_data = json.loads(str_data)
 
+                '''tmp holds all regenerated instance_obj'''
+                tmp = {}
+
                 """<class 'dict'> -> <class 'BaseModel'>"""
                 for (key, value) in dict_data.items():
-                    if key not in FileStorage.__objects.keys():
-                        FileStorage.__objects[key] = BaseModel(dict_data)
+                    tmp[key] = BaseModel(value)
+
+                '''set objects to fresh regenerated instance_obj'''
+                FileStorage.__objects = tmp
         except IOError:
             pass
