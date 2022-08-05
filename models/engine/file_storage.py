@@ -85,7 +85,7 @@ class FileStorage:
 
                 """<class 'dict'> -> <class 'BaseModel'>"""
                 for (key, value) in dict_data.items():
-                    if key not in FileStorage.__objects.keys():
-                        FileStorage.__objects[key] = BaseModel(dict_data)
-        except IOError:
+                    FileStorage.__objects[key] = BaseModel(**value)
+                print("Yes, it's a bug")
+        except Exception:
             pass
