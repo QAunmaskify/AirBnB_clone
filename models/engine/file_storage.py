@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """FileStorage Class"""
+import json
 
 
 class FileStorage:
@@ -36,3 +37,22 @@ class FileStorage:
         """
         key = obj.__class__.__name__ + '.' + obj.id
         FileStorage.__objects[key] = obj
+
+    def save(self):
+        """
+        Serializes objects (class attribute) and writes the serialized
+        data to JSON file accessible through file_path (class attribute)
+
+        Arg:
+            requires no argument
+        """
+        filename = FileStorage.__file_path
+        tmp = FileStorage.__objects
+
+        """Converts all instance_obj -> dict_representation of it"""
+        for (key, value) in tmp.items():
+            FileStorage.__objects[key] = value.to_dict()
+
+        with open(filename, 'w', encoding='utf-8') as w_file:
+            str_data = json.dumps(FileStorage.__objects, indent=2)
+            w_file.write(str_data)
