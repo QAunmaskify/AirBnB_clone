@@ -27,4 +27,3 @@ class FileStorage:
             obj
         """
         return FileStorage.__objects
-        """
