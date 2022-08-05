@@ -23,7 +23,16 @@ class FileStorage:
         to any module that requests for it.
 
         Arg:
-            self (BaseModel object instance): pass in BaseModel instance
-            obj
+            requires no argument
         """
         return FileStorage.__objects
+
+    def new(self, obj):
+        """
+        Stores a new BaseModel instance_obj in class attribute (objects)
+
+        Arg:
+            obj (BaseModel instance_obj): pass in BaseModel instance_obj
+        """
+        key = obj.__class__.__name__ + '.' + obj.id
+        FileStorage.__objects[key] = obj
