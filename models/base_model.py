@@ -26,18 +26,14 @@ class BaseModel:
         """
 
         """Set the public instance if kwargs is not empty"""
-        if len(kwargs) > 0:
-            self.my_number = kwargs['my_number']
-            self.name = kwargs['name']
-            self.created_at = datetime.strptime(
-                kwargs['created_at'],
-                '%Y-%m-%dT%H:%M:%S.%f'
-            )
-            self.id = kwargs['id']
-            self.updated_at = datetime.strptime(
-                kwargs['updated_at'],
-                '%Y-%m-%dT%H:%M:%S.%f'
-            )
+        if kwargs:
+            for key, value in kwargs.items():
+                if key == "__class__":
+                    continue
+                if key in ["created_at", "updated_at"]:
+                    value = datetime.strptime(kwargs['updated_at'],
+                            '%Y-%m-%dT%H:%M:%S.%f')
+                self.__dict__[key] = value
         else:
             """Otherwise, use this default setting"""
             self.id = str(uuid4())
@@ -62,6 +58,7 @@ class BaseModel:
         return new_dict
 
     def __str__(self):
+        """Return the string representation of the instance"""
         return "[{}] ({}) {}".format(
             self.__class__.__name__,
             self.id,
