@@ -49,10 +49,43 @@ class FileStorage:
         filename = FileStorage.__file_path
         tmp = FileStorage.__objects
 
-        """Converts all instance_obj -> dict_representation of it"""
+        """
+        Converts all BaseModel instance_obj in objects attributes to
+        its dictionary representation i.e:
+
+        instance_obj -> dict_representation same as below
+
+        <class 'BaseModel'> -> <class 'dict'>
+        """
         for (key, value) in tmp.items():
             FileStorage.__objects[key] = value.to_dict()
 
         with open(filename, 'w', encoding='utf-8') as w_file:
             str_data = json.dumps(FileStorage.__objects, indent=2)
             w_file.write(str_data)
+
+    def reload(self):
+        """
+        Deserializes the content of JSON file back to the structure of
+        objects (dictionary). Then converts the contents of the dictionary
+        to BaseModel instance_obj i.e:
+
+        <class 'dict'> -> <class 'BaseModel'>
+
+        Arg:
+            requires no argument
+        """
+        from models.base_model import BaseModel
+        filename = FileStorage.__file_path
+
+        try:
+            with open(filename, 'r', encoding='utf-8') as r_file:
+                str_data = r_file.read()
+                dict_data = json.loads(str_data)
+
+                """<class 'dict'> -> <class 'BaseModel'>"""
+                for (key, value) in dict_data.items():
+                    if key not in FileStorage.__objects.keys():
+                        FileStorage.__objects[key] = BaseModel(dict_data)
+        except IOError:
+            pass
