@@ -88,7 +88,7 @@ class FileStorage:
 
                 """<class 'dict'> -> <class 'BaseModel'>"""
                 for (key, value) in dict_data.items():
-                    tmp[key] = BaseModel(value)
+                    tmp[key] = BaseModel(**value)
 
                 '''set objects to fresh regenerated instance_obj'''
                 FileStorage.__objects = tmp
