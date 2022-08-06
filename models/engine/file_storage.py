@@ -20,8 +20,9 @@ class FileStorage:
 
     def all(self):
         """
-        Returns all the contents of objects (private class attribute)
-        to any module that requests for it.
+        Returns all stored objects (dictionary representation)
+        of BaseModel instance_obj to any module that requests for
+        it.
 
         Arg:
             requires no argument
@@ -47,7 +48,6 @@ class FileStorage:
             requires no argument
         """
         filename = FileStorage.__file_path
-        tmp = {}
 
         """
         Converts all BaseModel instance_obj in objects attributes to
@@ -57,11 +57,11 @@ class FileStorage:
 
         <class 'BaseModel'> -> <class 'dict'>
         """
-        for (key, value) in tmp.items():
-            tmp[key] = value.to_dict()
+        for (key, value) in FileStorage.__objects.items():
+            FileStorage.__objects[key] = value.to_dict()
 
         with open(filename, 'w', encoding='utf-8') as w_file:
-            str_data = json.dumps(tmp, indent=2)
+            str_data = json.dumps(FileStorage.__objects, indent=2)
             w_file.write(str_data)
 
     def reload(self):
