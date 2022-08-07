@@ -4,6 +4,7 @@
 
 from models.base_model import BaseModel
 
+
 class User(BaseModel):
     """
     User class extends BaseModel (super class)
@@ -11,7 +12,6 @@ class User(BaseModel):
     Args:
         BaseModel: super class inherited
     """
-
     email = ''
     password = ''
     first_name = ''
