@@ -47,7 +47,7 @@ class FileStorage:
             requires no argument
         """
         filename = FileStorage.__file_path
-        tmp = FileStorage.__objects
+        tmp_store = {}
 
         """
         Converts all BaseModel instance_obj in objects attributes to
@@ -57,11 +57,11 @@ class FileStorage:
 
         <class 'BaseModel'> -> <class 'dict'>
         """
-        for (key, value) in tmp.items():
-            FileStorage.__objects[key] = value.to_dict()
+        for (key, value) in FileStorage.__objects.items():
+            tmp_store[key] = value.to_dict()
 
         with open(filename, 'w', encoding='utf-8') as w_file:
-            str_data = json.dumps(FileStorage.__objects, indent=2)
+            str_data = json.dumps(tmp_store, indent=2)
             w_file.write(str_data)
 
     def reload(self):
@@ -83,14 +83,16 @@ class FileStorage:
                 str_data = r_file.read()
                 dict_data = json.loads(str_data)
 
-                '''tmp holds all regenerated instance_obj'''
-                tmp = {}
-
                 """<class 'dict'> -> <class 'BaseModel'>"""
                 for (key, value) in dict_data.items():
-                    tmp[key] = BaseModel(value)
-
-                '''set objects to fresh regenerated instance_obj'''
-                FileStorage.__objects = tmp
-        except IOError:
+                    FileStorage.__objects[key] = BaseModel(**value)
+        except Exception:
             pass
+
+    def update(self, obj_name, obj_id, attr, value):
+        key = obj_name + '.' + obj_id
+        setattr(FileStorage.__objects[key], attr, value)
+
+    def destroy(self, obj_name, obj_id):
+        key = obj_name + '.' + obj_id
+        del (FileStorage.__objects[key])
