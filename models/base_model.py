@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 """BaseModel Class"""
+
+
 from datetime import datetime
 from uuid import uuid4
 from models import storage
@@ -20,35 +22,61 @@ class BaseModel:
     """
     def __init__(self, *args, **kwargs):
         """__init__ initializes BaseModel instance attributes
+
+
         Args:
-            args (tuple): set positional parameter(s).
-            kwargs (dict): set key/value pair parameter(s)
+            *args: Variable length argument list.
+            **kwargs: Arbitrary keyword arguments.
         """
 
-        """Set the public instance if kwargs is not empty"""
         if len(kwargs) > 0:
             for (key, value) in kwargs.items():
                 if isinstance(key, datetime):
+
+                    #: str: created_at or updated_at set to datetime str
                     self[key] = datetime.strptime(
                         kwargs[key], '%Y-%m-%dT%H:%M:%S.%f'
                     )
                 elif key != '__class__':
+                    #: str: every other attributes set to str
                     setattr(self, key, value)
 
         else:
-            """Otherwise, use this default setting"""
+            #: str: id attribute set to str
             self.id = str(uuid4())
+
+            #: datetime: updated_at set to datetime obj
             self.updated_at = datetime.now()
+
+            #: datetime: created_at set to datetime obj
             self.created_at = datetime.now()
             storage.new(self)
 
-    def save(self):
-        """Update the time on instance modification"""
+    def save(self) -> None:
+        """
+        save updates the time on instance modification and save
+        to storage.
+
+        Args:
+            No required parameter.    
+
+        Returns:
+            The return value. None
+        """
         self.updated_at = datetime.now()
         storage.save()
 
-    def to_dict(self):
-        """Convert instance to dictionary"""
+    def to_dict(self) -> dict:
+        """
+        to_dict converts class instance to dictionary representation
+
+
+        Args:
+            No required parameter.
+
+        Returns:
+            dict if successful, None otherwise
+        """
         new_dict = {}
         for (key, value) in self.__dict__.items():
             if type(value) is datetime:
@@ -58,7 +86,7 @@ class BaseModel:
             new_dict['__class__'] = self.__class__.__name__
         return new_dict
 
-    def __str__(self):
+    def __str__(self) -> str:
         """Return the string representation of the instance"""
         return "[{}] ({}) {}".format(
             type(self).__name__,
