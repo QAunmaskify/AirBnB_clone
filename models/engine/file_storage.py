@@ -82,7 +82,6 @@ class FileStorage:
         from models.city import City
         from models.amenity import Amenity
         from models.place import Place
-        from models.review import Review
 
         filename = FileStorage.__file_path
 
@@ -110,8 +109,6 @@ class FileStorage:
                         tmp[key] = Amenity(**value)
                     elif type_of_class == 'Place':
                         tmp[key] = Place(**value)
-                    elif type_of_class == 'Review':
-                        tmp[key] = Review(**value)
 
                 '''set objects to fresh regenerated instance_obj'''
                 FileStorage.__objects = tmp
