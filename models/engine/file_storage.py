@@ -48,6 +48,7 @@ class FileStorage:
             requires no argument
         """
         filename = FileStorage.__file_path
+        tmp_store = {}
 
         """
         Converts all BaseModel instance_obj in objects attributes to
@@ -58,10 +59,10 @@ class FileStorage:
         <class 'BaseModel'> -> <class 'dict'>
         """
         for (key, value) in FileStorage.__objects.items():
-            FileStorage.__objects[key] = value.to_dict()
+            tmp_store[key] = value.to_dict()
 
         with open(filename, 'w', encoding='utf-8') as w_file:
-            str_data = json.dumps(FileStorage.__objects, indent=2)
+            str_data = json.dumps(tmp_store, indent=2)
             w_file.write(str_data)
 
     def reload(self):
