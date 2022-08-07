@@ -7,10 +7,8 @@ class FileStorage:
     """
     FileStorage uses file_path and objects attributes
     (abstracted data) as follow:
-
     file_path (private): keeps a reference to JSON file
     path.
-
     objects (dict): private class attribute to store all
     instance_obj.
     """
@@ -32,7 +30,6 @@ class FileStorage:
     def new(self, obj):
         """
         Stores a new BaseModel instance_obj in class attribute (objects)
-
         Arg:
             obj (BaseModel instance_obj): pass in BaseModel instance_obj
         """
@@ -43,7 +40,6 @@ class FileStorage:
         """
         Serializes objects (class attribute) and writes the serialized
         data to JSON file accessible through file_path (class attribute)
-
         Arg:
             requires no argument
         """
@@ -53,9 +49,7 @@ class FileStorage:
         """
         Converts all BaseModel instance_obj in objects attributes to
         its dictionary representation i.e:
-
         instance_obj -> dict_representation same as below
-
         <class 'BaseModel'> -> <class 'dict'>
         """
         for (key, value) in FileStorage.__objects.items():
@@ -70,7 +64,6 @@ class FileStorage:
         Deserializes the content of JSON file back to the structure of
         objects (dictionary). Then converts the contents of the dictionary
         to supported className instance_obj i.e:
-
         <class 'dict'> -> <class 'AnySupportedClassName'>
 
         Arg:
@@ -101,3 +94,11 @@ class FileStorage:
                 FileStorage.__objects = tmp
         except IOError:
             pass
+
+    def update(self, obj_name, obj_id, attr, value):
+        key = obj_name + '.' + obj_id
+        setattr(FileStorage.__objects[key], attr, value)
+
+    def destroy(self, obj_name, obj_id):
+        key = obj_name + '.' + obj_id
+        del (FileStorage.__objects[key])
