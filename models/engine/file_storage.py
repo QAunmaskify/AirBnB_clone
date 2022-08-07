@@ -79,6 +79,10 @@ class FileStorage:
         from models.base_model import BaseModel
         from models.user import User
         from models.state import State
+        from models.city import City
+        from models.amenity import Amenity
+        from models.place import Place
+        from models.review import Review
 
         filename = FileStorage.__file_path
 
@@ -100,6 +104,14 @@ class FileStorage:
                         tmp[key] = User(**value)
                     elif type_of_class == 'State':
                         tmp[key] = State(**value)
+                    elif type_of_class == 'City':
+                        tmp[key] = City(**value)
+                    elif type_of_class == 'Amenity':
+                        tmp[key] = Amenity(**value)
+                    elif type_of_class == 'Place':
+                        tmp[key] = Place(**value)
+                    elif type_of_class == 'Review':
+                        tmp[key] = Review(**value)
 
                 '''set objects to fresh regenerated instance_obj'''
                 FileStorage.__objects = tmp
