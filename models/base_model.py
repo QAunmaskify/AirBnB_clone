@@ -9,16 +9,9 @@ from models import storage
 
 class BaseModel:
     """
-    Base class, BaseModel, defines all common public
-    instance attributes: id, created_at, updated_at.
-
-    id: assign unique string value when an instance
-    is created.
-
-    created_at: assign datetime value on instance creation.
-
-    updated_at: assign datetime value on instance creation
-    and modify whenever an instance is updated.
+    Base class, BaseModel, defines all basic common public
+    instance attributes: id, created_at, updated_at which
+    are inherited by other class that extends this base class.
     """
     def __init__(self, *args, **kwargs):
         """__init__ initializes BaseModel instance attributes
@@ -55,13 +48,13 @@ class BaseModel:
     def save(self) -> None:
         """
         save updates the time on instance modification and save
-        to storage.
+        an instance object to storage.
 
         Args:
-            No required parameter.    
+            Required no parameter.
 
         Returns:
-            The return value. None
+            None either successful or not.
         """
         self.updated_at = datetime.now()
         storage.save()
@@ -72,10 +65,20 @@ class BaseModel:
 
 
         Args:
-            No required parameter.
+            Required no parameter.
 
         Returns:
-            dict if successful, None otherwise
+            dict if successful, like::
+
+            {   'id': 'e792-3f34-232-000f',
+                'created_at': '2022-08-07T21:05:54.119572',
+                'updated_at': '2022-08-07T21:05:56.119241',
+                '__class__': 'BaseModel'
+            }
+
+        Raises:
+            KeyError: dict does not have to_dict.
+
         """
         new_dict = {}
         for (key, value) in self.__dict__.items():
