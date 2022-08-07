@@ -7,10 +7,8 @@ class FileStorage:
     """
     FileStorage uses file_path and objects attributes
     (abstracted data) as follow:
-
     file_path (private): keeps a reference to JSON file
     path.
-
     objects (dict): private class attribute to store all
     instance_obj.
     """
@@ -20,9 +18,9 @@ class FileStorage:
 
     def all(self):
         """
-        Returns all the contents of objects (private class attribute)
-        to any module that requests for it.
-
+        Returns all stored objects (dictionary representation)
+        of BaseModel instance_obj to any module that requests for
+        it.
         Arg:
             requires no argument
         """
@@ -31,7 +29,6 @@ class FileStorage:
     def new(self, obj):
         """
         Stores a new BaseModel instance_obj in class attribute (objects)
-
         Arg:
             obj (BaseModel instance_obj): pass in BaseModel instance_obj
         """
@@ -42,7 +39,6 @@ class FileStorage:
         """
         Serializes objects (class attribute) and writes the serialized
         data to JSON file accessible through file_path (class attribute)
-
         Arg:
             requires no argument
         """
@@ -52,9 +48,7 @@ class FileStorage:
         """
         Converts all BaseModel instance_obj in objects attributes to
         its dictionary representation i.e:
-
         instance_obj -> dict_representation same as below
-
         <class 'BaseModel'> -> <class 'dict'>
         """
         for (key, value) in FileStorage.__objects.items():
@@ -68,14 +62,13 @@ class FileStorage:
         """
         Deserializes the content of JSON file back to the structure of
         objects (dictionary). Then converts the contents of the dictionary
-        to BaseModel instance_obj i.e:
-
-        <class 'dict'> -> <class 'BaseModel'>
-
+        to supported className instance_obj i.e:
+        <class 'dict'> -> <class 'AnySupportedClassName'>
         Arg:
             requires no argument
         """
         from models.base_model import BaseModel
+        from models.user import User
         filename = FileStorage.__file_path
 
         try:
@@ -83,10 +76,21 @@ class FileStorage:
                 str_data = r_file.read()
                 dict_data = json.loads(str_data)
 
-                """<class 'dict'> -> <class 'BaseModel'>"""
+                '''tmp holds all regenerated instance_obj'''
+                tmp = {}
+
+                """<class 'dict'> -> <class 'AnySupportedClassName'>"""
                 for (key, value) in dict_data.items():
-                    FileStorage.__objects[key] = BaseModel(**value)
-        except Exception:
+                    type_of_class = key.split('.')[0]
+
+                    if type_of_class == 'BaseModel':
+                        tmp[key] = BaseModel(**value)
+                    elif type_of_class == 'User':
+                        tmp[key] = User(**value)
+
+                '''set objects to fresh regenerated instance_obj'''
+                FileStorage.__objects = tmp
+        except IOError:
             pass
 
     def update(self, obj_name, obj_id, attr, value):
