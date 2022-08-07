@@ -21,6 +21,7 @@ class FileStorage:
         Returns all stored objects (dictionary representation)
         of BaseModel instance_obj to any module that requests for
         it.
+
         Arg:
             requires no argument
         """
@@ -64,6 +65,7 @@ class FileStorage:
         objects (dictionary). Then converts the contents of the dictionary
         to supported className instance_obj i.e:
         <class 'dict'> -> <class 'AnySupportedClassName'>
+
         Arg:
             requires no argument
         """

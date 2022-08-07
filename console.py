@@ -47,27 +47,35 @@ class HBNBCommand(cmd.Cmd):
             print(instance_obj.id)
 
     def do_show(self, line):
-<<<<<<< HEAD
-        '''
-        prints the string representation of an instance based on
-        class name and id
+        
+        '''Fetch all stored instance obj, select a particular
+           by the given id and print its id to console
         '''
         line = self.parseline(line)
-        class_name, class_id = line[0], line[1]
+        class_name = line[0]
+        id = line[1]
+
         if class_name is None:
-            print('** class name missing **')
+           print('** class name missing **')
         elif class_name not in HBNBCommand.__supported_class:
             print('** class doesn\'t exist **')
-        elif class_id is None:
+        elif id == '':
             print('** instance id missing **')
         else:
-            key = '{}.{}'.format(class_name, class_id)
-            try:
-                result = storage.all()[key]
-                print(result)
-            except KeyError:
-                print('** no instance found **')
-    
+            data = storage.all()
+            new_dict = {}
+
+            '''convert to dict: (Work in Progress but still buggy)'''
+            for (key, value) in data.items():
+                new_dict[key] = self.to_dict(value)
+
+            for obj in data.values():
+                print(data.values())
+                if id == obj.id:
+                    print(obj)
+                    return
+            print('** no instance found **')
+
     def do_destroy(self, line):
         '''
         deletes an instance based on class name and id
@@ -128,35 +136,6 @@ class HBNBCommand(cmd.Cmd):
                 storage.save()
             except KeyError:
                 print('** no instance found **')
-=======
-        '''Fetch all stored instance obj, select a particular
-           by the given id and print its id to console
-        '''
-        line = self.parseline(line)
-        class_name = line[0]
-        id = line[1]
-
-        if class_name is None:
-           print('** class name missing **')
-        elif class_name not in HBNBCommand.__supported_class:
-            print('** class doesn\'t exist **')
-        elif id == '':
-            print('** instance id missing **')
-        else:
-            data = storage.all()
-            new_dict = {}
-
-            '''convert to dict: (Work in Progress but still buggy)'''
-            for (key, value) in data.items():
-                new_dict[key] = self.to_dict(value)
-
-            for obj in data.values():
-                print(data.values())
-                if id == obj.id:
-                    print(obj)
-                    return
-            print('** no instance found **')
->>>>>>> master
 
     '''=============================================
             Overridden base class method section
@@ -198,18 +177,6 @@ class HBNBCommand(cmd.Cmd):
         print(help_msg)
 
     def help_show(self):
-<<<<<<< HEAD
-        print('Prints the string representation of an instance \
-                based on the class name and id\n')
-
-    def help_destroy(self):
-        print('Deletes an instance based on the class name and id\n')
-
-    def help_update(self):
-        print('Updates an instance based on the class name and id \
-                by adding or updating attribute\n')
-
-=======
         help_msg = '''
             show command prints id of a particular instance obj\n
             of supported class name. It selects a particular obj\n
@@ -218,12 +185,19 @@ class HBNBCommand(cmd.Cmd):
         '''
         print(help_msg)
 
+    def help_destroy(self):
+        print('Deletes an instance based on the class name and id\n')
+
+    def help_update(self):
+        print('Updates an instance based on the class name and id \
+                by adding or updating attribute\n')
+
     '''=========================================
             HBNBCommand public method
         ======================================'''
     def to_dict(self, instance_obj):
         return instance_obj.__dict__
->>>>>>> master
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
