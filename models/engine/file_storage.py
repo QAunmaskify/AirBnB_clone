@@ -78,6 +78,8 @@ class FileStorage:
         """
         from models.base_model import BaseModel
         from models.user import User
+        from models.state import State
+
         filename = FileStorage.__file_path
 
         try:
@@ -96,6 +98,8 @@ class FileStorage:
                         tmp[key] = BaseModel(**value)
                     elif type_of_class == 'User':
                         tmp[key] = User(**value)
+                    elif type_of_class == 'State':
+                        tmp[key] = State(**value)
 
                 '''set objects to fresh regenerated instance_obj'''
                 FileStorage.__objects = tmp
