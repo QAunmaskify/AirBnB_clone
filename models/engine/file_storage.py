@@ -69,14 +69,15 @@ class FileStorage:
         """
         Deserializes the content of JSON file back to the structure of
         objects (dictionary). Then converts the contents of the dictionary
-        to BaseModel instance_obj i.e:
+        to supported className instance_obj i.e:
 
-        <class 'dict'> -> <class 'BaseModel'>
+        <class 'dict'> -> <class 'AnySupportedClassName'>
 
         Arg:
             requires no argument
         """
         from models.base_model import BaseModel
+        from models.user import User
         filename = FileStorage.__file_path
 
         try:
@@ -87,9 +88,14 @@ class FileStorage:
                 '''tmp holds all regenerated instance_obj'''
                 tmp = {}
 
-                """<class 'dict'> -> <class 'BaseModel'>"""
+                """<class 'dict'> -> <class 'AnySupportedClassName'>"""
                 for (key, value) in dict_data.items():
-                    tmp[key] = BaseModel(**value)
+                    type_of_class = key.split('.')[0]
+
+                    if type_of_class == 'BaseModel':
+                        tmp[key] = BaseModel(**value)
+                    elif type_of_class == 'User':
+                        tmp[key] = User(**value)
 
                 '''set objects to fresh regenerated instance_obj'''
                 FileStorage.__objects = tmp
