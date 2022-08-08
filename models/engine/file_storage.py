@@ -109,6 +109,9 @@ class FileStorage:
                         tmp[key] = Amenity(**value)
                     elif type_of_class == 'Place':
                         tmp[key] = Place(**value)
+                    elif type_of_class == 'Review':
+                        tmp[key] = Review(**value)
+
 
                 '''set objects to fresh regenerated instance_obj'''
                 FileStorage.__objects = tmp
