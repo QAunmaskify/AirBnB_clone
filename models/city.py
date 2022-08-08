@@ -7,10 +7,12 @@ from models.base_model import BaseModel
 
 class City(BaseModel):
     '''
-    City class extends BaseModel
+    City class extends BaseModel (super class)
 
-    Arg:
-        BaseModel - super class
+
+    Attributes:
+        state_id (str): a chosen state.
+        name: name of a state.
     '''
     state_id = ''
     name = ''
