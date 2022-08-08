@@ -5,20 +5,15 @@ import json
 
 class FileStorage:
     """
-    FileStorage uses file_path and objects attributes
-    (abstracted data) as follow:
+    FileStorage abstracts file_path and objects attributes
+    for caching data and processing it.
 
-    file_path (private): keeps a reference to JSON file
-    path.
-
-    objects (dict): private class attribute to store all
-    instance_obj.
     """
 
     __file_path = 'file.json'
     __objects = {}
 
-    def all(self):
+    def all(self) -> dict:
         """
         Returns all stored objects (dictionary representation)
         of BaseModel instance_obj to any module that requests for
@@ -26,6 +21,10 @@ class FileStorage:
 
         Arg:
             requires no argument
+
+        Returns:
+            dict
+
         """
         return FileStorage.__objects
 
@@ -34,30 +33,36 @@ class FileStorage:
         Stores a new BaseModel instance_obj in class attribute (objects)
 
         Arg:
-            obj (BaseModel instance_obj): pass in BaseModel instance_obj
+            obj (instance_obj): pass in class instance_obj
+
+        Returns:
+            None
         """
         key = obj.__class__.__name__ + '.' + obj.id
         FileStorage.__objects[key] = obj
 
-    def save(self):
+    def save(self) -> None:
         """
-        Serializes objects (class attribute) and writes the serialized
-        data to JSON file accessible through file_path (class attribute)
+        Serializes dictionary representation of a class and writes it as
+        'string data' to JSON file accessible through file_path.
+
+        However, it converts all class instance objects to its dictionary
+        representation i.e: instance_obj -> dict_representation.
+
+        Examples:
+            <class 'BaseModel'>  ==>>  <class 'dict'>
 
         Arg:
-            requires no argument
+            Requires no argument.
+
+        Returns:
+            None
+
         """
+
         filename = FileStorage.__file_path
         tmp_store = {}
 
-        """
-        Converts all BaseModel instance_obj in objects attributes to
-        its dictionary representation i.e:
-
-        instance_obj -> dict_representation same as below
-
-        <class 'BaseModel'> -> <class 'dict'>
-        """
         for (key, value) in FileStorage.__objects.items():
             tmp_store[key] = value.to_dict()
 
@@ -65,16 +70,21 @@ class FileStorage:
             str_data = json.dumps(tmp_store, indent=2)
             w_file.write(str_data)
 
-    def reload(self):
+    def reload(self) -> None:
         """
         Deserializes the content of JSON file back to the structure of
         objects (dictionary). Then converts the contents of the dictionary
-        to supported className instance_obj i.e:
+        to supported class instance_obj based on each class type.
 
-        <class 'dict'> -> <class 'AnySupportedClassName'>
+        Examples:
+            <class 'dict'>  ==>  <class 'instance_obj'>
 
         Arg:
-            requires no argument
+            Requires no argument.
+
+        Returns:
+            None
+
         """
         from models.base_model import BaseModel
         from models.user import User
@@ -90,10 +100,8 @@ class FileStorage:
                 str_data = r_file.read()
                 dict_data = json.loads(str_data)
 
-                '''tmp holds all regenerated instance_obj'''
                 tmp = {}
 
-                """<class 'dict'> -> <class 'AnySupportedClassName'>"""
                 for (key, value) in dict_data.items():
                     type_of_class = key.split('.')[0]
 
@@ -112,8 +120,6 @@ class FileStorage:
                     elif type_of_class == 'Review':
                         tmp[key] = Review(**value)
 
-
-                '''set objects to fresh regenerated instance_obj'''
                 FileStorage.__objects = tmp
         except IOError:
             pass
