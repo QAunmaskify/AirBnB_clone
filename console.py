@@ -4,6 +4,11 @@ import cmd
 import re
 from models.base_model import BaseModel
 from models.user import User
+from models.place import Place
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
+from models.state import State
 from models import storage
 
 
@@ -12,13 +17,10 @@ class HBNBCommand(cmd.Cmd):
     HBNBCommand extends Cmd. It inherits cmdloop method that
     gives prompt on every single interation.
 
-
     Attributes:
         prompt (str): name of command interpreter.
-        
     """
     prompt = '(hbnb) '
-    
     __supported_class = [
         'BaseModel',
         'User',
@@ -79,7 +81,7 @@ class HBNBCommand(cmd.Cmd):
             instance = self.create(class_name)
             instance.save()
             print(instance.id)
-            
+
     def do_show(self, line: str) -> None:
         '''
         Show command prints to a console a particular instance
@@ -87,7 +89,6 @@ class HBNBCommand(cmd.Cmd):
 
         Args:
             line: Input argument to show command
-
 
         Returns:
             None
@@ -111,28 +112,31 @@ class HBNBCommand(cmd.Cmd):
                 if id == obj_id and class_name == obj_name:
                     print(value)
                     return
-                
+
             print('** no instance found **')
 
     def do_destroy(self, line):
         '''
         deletes an instance based on class name and id
+
+        Args:
+            line: destroy BaseModel 1234-1234-1234
         '''
-        line = self.parseline(line)
-        class_name, class_id = line[0], line[1]
-        if class_name is None:
+        line = line.split(' ')
+        if line[0] == '':
             print('** class name missing **')
-        elif class_name not in HBNBCommand.__supported_class:
+        elif line[0] not in HBNBCommand.__supported_class:
             print('** class doesn\'t exist **')
-        elif class_id is None:
-            print('** instance id missing **')
         else:
-            key = '{}.{}'.format(class_name, class_id)
             try:
+                class_name, class_id = line[0], line[1]
+                key = '{}.{}'.format(class_name, class_id)
                 storage.destroy(class_name, class_id)
                 storage.save()
             except KeyError:
                 print('** no instance found **')
+            except IndexError:
+                print('** instance id missing **')
 
     def do_all(self, line):
         '''
@@ -157,25 +161,31 @@ class HBNBCommand(cmd.Cmd):
         '''
         updates an instance based on class name and id
         by adding or updating attribute
+
+        Args:
+            line: update <class name> <id> <attribute name> "<attribute value>"
         '''
-        line = line.replace('"', '').strip(' ')
+        line = line.replace('"', '')
         line = line.split(' ')
-        if len(line) == 0:
+        print(line)
+        if line[0] == '':
             print('** class name missing **')
         elif line[0] not in HBNBCommand.__supported_class:
             print('** class doesn\'t exist **')
-        elif line[1] is None:
+        elif len(line) == 1:
             print('** instance id missing **')
-        elif len(line) == 2:
-            print('** attribute name missing **')
-        elif len(line) == 3:
-            print('** value missing **')
         else:
             try:
+                key = '{}.{}'.format(line[0], line[1])
+                storage.all()[key]
                 storage.update(*line)
                 storage.save()
             except KeyError:
                 print('** no instance found **')
+            except IndexError:
+                print('** instance id missing **')
+            except TypeError:
+                print('** value missing **')
 
     '''=============================================
             Overridden base class method section
@@ -269,6 +279,26 @@ class HBNBCommand(cmd.Cmd):
         ======================================'''
     def to_dict(self, instance_obj):
         return instance_obj.__dict__
+
+    def create(self, class_name):
+        instance = None
+
+        if class_name == 'BaseModel':
+            instance = BaseModel()
+        elif class_name == 'User':
+            instance = User()
+        elif class_name == 'Place':
+            instance = Place()
+        elif class_name == 'Amenity':
+            instance = Amenity()
+        elif class_name == 'City':
+            instance = City()
+        elif class_name == 'State':
+            instance = State()
+        elif class_name == 'Review':
+            instance = Review()
+
+        return instance
 
 
     def create(self, class_name):
