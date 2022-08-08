@@ -31,7 +31,6 @@ class FileStorage:
     def new(self, obj):
         """
         Stores a new BaseModel instance_obj in class attribute (objects)
-
         Arg:
             obj (instance_obj): pass in class instance_obj
 
@@ -88,11 +87,6 @@ class FileStorage:
         """
         from models.base_model import BaseModel
         from models.user import User
-        from models.state import State
-        from models.city import City
-        from models.amenity import Amenity
-        from models.place import Place
-
         filename = FileStorage.__file_path
 
         try:
@@ -123,3 +117,11 @@ class FileStorage:
                 FileStorage.__objects = tmp
         except IOError:
             pass
+
+    def update(self, obj_name, obj_id, attr, value):
+        key = obj_name + '.' + obj_id
+        setattr(FileStorage.__objects[key], attr, value)
+
+    def destroy(self, obj_name, obj_id):
+        key = obj_name + '.' + obj_id
+        del (FileStorage.__objects[key])

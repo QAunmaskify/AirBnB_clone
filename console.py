@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """HBNBCommand Class"""
 import cmd
+import re
 from models.base_model import BaseModel
 from models.user import User
 from models import storage
@@ -17,7 +18,7 @@ class HBNBCommand(cmd.Cmd):
         
     """
     prompt = '(hbnb) '
-
+    
     __supported_class = [
         'BaseModel',
         'User',
@@ -73,12 +74,12 @@ class HBNBCommand(cmd.Cmd):
         if class_name is None:
             print('** class name missing **')
         elif class_name not in HBNBCommand.__supported_class:
-            print('** class doesn\'t exit **')
+            print('** class doesn\'t exist **')
         else:
             instance = self.create(class_name)
             instance.save()
             print(instance.id)
-
+            
     def do_show(self, line: str) -> None:
         '''
         Show command prints to a console a particular instance
@@ -87,22 +88,22 @@ class HBNBCommand(cmd.Cmd):
         Args:
             line: Input argument to show command
 
+
         Returns:
             None
         '''
         line = self.parseline(line)
         class_name = line[0]
-        id = line[1]
+        class_id = line[1]
 
         if class_name is None:
-           print('** class name missing **')
+            print('** class name missing **')
         elif class_name not in HBNBCommand.__supported_class:
             print('** class doesn\'t exist **')
-        elif id == '':
+        elif class_id == '':
             print('** instance id missing **')
         else:
             data = storage.all()
-
             for value in data.values():
                 obj_id = value.id
                 obj_name = type(value).__name__
@@ -112,6 +113,69 @@ class HBNBCommand(cmd.Cmd):
                     return
                 
             print('** no instance found **')
+
+    def do_destroy(self, line):
+        '''
+        deletes an instance based on class name and id
+        '''
+        line = self.parseline(line)
+        class_name, class_id = line[0], line[1]
+        if class_name is None:
+            print('** class name missing **')
+        elif class_name not in HBNBCommand.__supported_class:
+            print('** class doesn\'t exist **')
+        elif class_id is None:
+            print('** instance id missing **')
+        else:
+            key = '{}.{}'.format(class_name, class_id)
+            try:
+                storage.destroy(class_name, class_id)
+                storage.save()
+            except KeyError:
+                print('** no instance found **')
+
+    def do_all(self, line):
+        '''
+        prints all string representation of all instance based or
+        or not on the class name
+        '''
+        line = self.parseline(line)
+        class_name = line[0]
+        if class_name is not None and class_name\
+                not in HBNBCommand.__supported_class:
+            print('** class doesn\'t exist **')
+        else:
+            list_all = storage.all()
+            if class_name:
+                result = [str(list_all[obj]) for obj in
+                          list_all if obj.startswith(class_name)]
+            else:
+                result = [str(list_all[obj]) for obj in list_all]
+            print(result)
+
+    def do_update(self, line):
+        '''
+        updates an instance based on class name and id
+        by adding or updating attribute
+        '''
+        line = line.replace('"', '').strip(' ')
+        line = line.split(' ')
+        if len(line) == 0:
+            print('** class name missing **')
+        elif line[0] not in HBNBCommand.__supported_class:
+            print('** class doesn\'t exist **')
+        elif line[1] is None:
+            print('** instance id missing **')
+        elif len(line) == 2:
+            print('** attribute name missing **')
+        elif len(line) == 3:
+            print('** value missing **')
+        else:
+            try:
+                storage.update(*line)
+                storage.save()
+            except KeyError:
+                print('** no instance found **')
 
     '''=============================================
             Overridden base class method section
@@ -143,6 +207,26 @@ class HBNBCommand(cmd.Cmd):
         ret = super().parseline(line)
         return ret
 
+    def default(self, line):
+        """ Called on an input line when the command prefix is not recognised
+        """
+        line = line.replace(',', '')
+        args = re.split(r'\.|\(|\)', line)
+        class_name = args[0]
+        method = args[1]
+        if method == "all":
+            self.do_all(line)
+        elif method == 'count':
+            print(len([k for k in storage.all().keys()
+                  if k.startswith(class_name)]))
+        elif method == "show":
+            self.do_show(class_name + ' ' + args[2])
+        elif method == 'destroy':
+            self.do_destroy(class_name + ' ' + args[2])
+        elif method == 'update':
+            print(args[1])
+            self.do_update(class_name + ' ' + args)
+
     '''================================================
             Overridden docstring section
         ============================================='''
@@ -173,11 +257,19 @@ class HBNBCommand(cmd.Cmd):
         '''
         print(help_msg)
 
+    def help_destroy(self):
+        print('Deletes an instance based on the class name and id\n')
+
+    def help_update(self):
+        print('Updates an instance based on the class name and id \
+                by adding or updating attribute\n')
+
     '''=========================================
             HBNBCommand public method
         ======================================'''
     def to_dict(self, instance_obj):
         return instance_obj.__dict__
+
 
     def create(self, class_name):
         instance = None
@@ -199,6 +291,7 @@ class HBNBCommand(cmd.Cmd):
 
         return instance
             
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
