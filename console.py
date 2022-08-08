@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """HBNBCommand Class"""
 import cmd
+import re
 from models.base_model import BaseModel
 from models.user import User
 from models import storage
@@ -17,7 +18,7 @@ class HBNBCommand(cmd.Cmd):
         
     """
     prompt = '(hbnb) '
-
+    
     __supported_class = [
         'BaseModel',
         'User',
@@ -78,7 +79,7 @@ class HBNBCommand(cmd.Cmd):
             instance = self.create(class_name)
             instance.save()
             print(instance.id)
-
+            
     def do_show(self, line: str) -> None:
         '''
         Show command prints to a console a particular instance
@@ -93,17 +94,16 @@ class HBNBCommand(cmd.Cmd):
         '''
         line = self.parseline(line)
         class_name = line[0]
-        id = line[1]
+        class_id = line[1]
 
         if class_name is None:
-           print('** class name missing **')
+            print('** class name missing **')
         elif class_name not in HBNBCommand.__supported_class:
             print('** class doesn\'t exist **')
-        elif id == '':
+        elif class_id == '':
             print('** instance id missing **')
         else:
             data = storage.all()
-
             for value in data.values():
                 obj_id = value.id
                 obj_name = type(value).__name__
@@ -141,12 +141,14 @@ class HBNBCommand(cmd.Cmd):
         '''
         line = self.parseline(line)
         class_name = line[0]
-        if class_name != None and class_name not in HBNBCommand.__supported_class:
+        if class_name is not None and class_name\
+                not in HBNBCommand.__supported_class:
             print('** class doesn\'t exist **')
         else:
             list_all = storage.all()
             if class_name:
-                result = [str(list_all[obj]) for obj in list_all if obj.startswith(class_name)]
+                result = [str(list_all[obj]) for obj in
+                          list_all if obj.startswith(class_name)]
             else:
                 result = [str(list_all[obj]) for obj in list_all]
             print(result)
@@ -204,6 +206,26 @@ class HBNBCommand(cmd.Cmd):
         '''
         ret = super().parseline(line)
         return ret
+
+    def default(self, line):
+        """ Called on an input line when the command prefix is not recognised
+        """
+        line = line.replace(',', '')
+        args = re.split(r'\.|\(|\)', line)
+        class_name = args[0]
+        method = args[1]
+        if method == "all":
+            self.do_all(line)
+        elif method == 'count':
+            print(len([k for k in storage.all().keys()
+                  if k.startswith(class_name)]))
+        elif method == "show":
+            self.do_show(class_name + ' ' + args[2])
+        elif method == 'destroy':
+            self.do_destroy(class_name + ' ' + args[2])
+        elif method == 'update':
+            print(args[1])
+            self.do_update(class_name + ' ' + args)
 
     '''================================================
             Overridden docstring section
