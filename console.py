@@ -3,39 +3,71 @@
 import cmd
 import re
 from models.base_model import BaseModel
+from models.user import User
 from models import storage
 
 
 class HBNBCommand(cmd.Cmd):
     """
-    HBNBCommand subclass Cmd. It uses inherited class
-    attribute (prompt) to issue command on each iteration
-    through inherited public method cmdloop().
+    HBNBCommand extends Cmd. It inherits cmdloop method that
+    gives prompt on every single interation.
 
-    Arg:
-        Cmd (super class): pass down its attributes and methods
-        for subclass extends.
 
+    Attributes:
+        prompt (str): name of command interpreter.
+        
     """
     prompt = '(hbnb) '
-
-    __supported_class = ['BaseModel', 'User', 'State', 'City',
-                         'Amenity', 'Place', 'Review']
+    
+    __supported_class = [
+        'BaseModel',
+        'User',
+        'Place',
+        'City',
+        'Amenity',
+        'Review',
+        'State'
+    ]
 
     '''=============================================
             Hbnb interpreter commands section
         =========================================='''
-    def do_quit(self, line):
-        '''Quit command to exit the program'''
-        return True
-
-    def do_EOF(self, line):
-        '''EOF exit the program and through key strokes: Ctrl + D'''
-        return True
-
-    def do_create(self, line):
+    def do_quit(self, line: str) -> bool:
         '''
-        create a new instance of BaseModel
+        Quit command to exit the program.
+
+        Args:
+            line: Required for super class 'onecmd' method.
+
+        Returns:
+            True for success, False otherwise.
+
+        '''
+        return True
+
+    def do_EOF(self, line: str) -> bool:
+        '''
+        EOF exit the program and through key strokes: Ctrl + D
+
+        Args:
+            line: Required for super class 'onecmd' method.
+
+        Returns:
+            True for success, False otherwise.
+
+        '''
+        return True
+
+    def do_create(self, line: str) -> None:
+        '''
+        Create command creates a new instance of a class.
+
+        Args:
+            line: Input argument to create command.
+
+        Returns:
+            None
+
         '''
         line = self.parseline(line)
         class_name = line[0]
@@ -44,13 +76,21 @@ class HBNBCommand(cmd.Cmd):
         elif class_name not in HBNBCommand.__supported_class:
             print('** class doesn\'t exist **')
         else:
-            instance_obj = BaseModel()
-            instance_obj.save()
-            print(instance_obj.id)
+            instance = self.create(class_name)
+            instance.save()
+            print(instance.id)
+            
+    def do_show(self, line: str) -> None:
+        '''
+        Show command prints to a console a particular instance
+        of a class.
 
-    def do_show(self, line):
-        '''Fetch all stored instance obj, select a particular
-           by the given id and print its id to console
+        Args:
+            line: Input argument to show command
+
+
+        Returns:
+            None
         '''
         line = self.parseline(line)
         class_name = line[0]
@@ -64,11 +104,15 @@ class HBNBCommand(cmd.Cmd):
             print('** instance id missing **')
         else:
             data = storage.all()
-            try:
-                key = "{}.{}".format(class_name, class_id)
-                print(data[key])
-            except Exception:
-                print('** no instance found **')
+            for value in data.values():
+                obj_id = value.id
+                obj_name = type(value).__name__
+
+                if id == obj_id and class_name == obj_name:
+                    print(value)
+                    return
+                
+            print('** no instance found **')
 
     def do_destroy(self, line):
         '''
@@ -136,17 +180,29 @@ class HBNBCommand(cmd.Cmd):
     '''=============================================
             Overridden base class method section
         =========================================='''
-    def emptyline(self):
+    def emptyline(self) -> bool:
         '''
-        Override emptyline so that Empty line + Enter shouldn't
-        execute either of previous cmd(s)
+        Override emptyline to deactivate Empty line + Enter shouldn't
+        being resolved to previous commands.
+
+        Args:
+            No arguments
+
+        Returns:
+            False for successful, True for otherwise
         '''
         return False
 
-    def parseline(self, line):
+    def parseline(self, line: tuple) -> tuple:
         '''
-        Override super parseline method to parse the agv from
+        Override parseline method to parse the agv from
         prompt and pass its result to any calling method.
+
+        Args:
+            line: variable of length of tuple of string
+
+        Returns:
+            tuple of str.
         '''
         ret = super().parseline(line)
         return ret
@@ -213,6 +269,28 @@ class HBNBCommand(cmd.Cmd):
         ======================================'''
     def to_dict(self, instance_obj):
         return instance_obj.__dict__
+
+
+    def create(self, class_name):
+        instance = None
+
+        if class_name == 'BaseModel':
+            instance = BaseModel()
+        elif class_name == 'User':
+            instance = User()
+        elif class_name == 'Place':
+            instance = Place()
+        elif class_name == 'Amenity':
+            instance = Amenity()
+        elif class_name == 'City':
+            instance = City()
+        elif class_name == 'State':
+            instance = State()
+        elif class_name == 'Review':
+            instance = Review()
+
+        return instance
+            
 
 
 if __name__ == '__main__':
