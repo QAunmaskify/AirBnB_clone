@@ -7,9 +7,10 @@ from models.base_model import BaseModel
 
 class State(BaseModel):
     '''
-    State class extends BaseModel to inherit
+    State class extends BaseModel (super class)
 
-    Arg:
-        BaseModel - super class
+
+    Attributes:
+        name (str): name of a state
     '''
     name = ''

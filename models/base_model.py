@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 """BaseModel Class"""
+
+
 from datetime import datetime
 from uuid import uuid4
 from models import storage
@@ -7,48 +9,77 @@ from models import storage
 
 class BaseModel:
     """
-    Base class, BaseModel, defines all common public
-    instance attributes: id, created_at, updated_at.
-
-    id: assign unique string value when an instance
-    is created.
-
-    created_at: assign datetime value on instance creation.
-
-    updated_at: assign datetime value on instance creation
-    and modify whenever an instance is updated.
+    Base class, BaseModel, defines all basic common public
+    instance attributes: id, created_at, updated_at which
+    are inherited by other class that extends this base class.
     """
     def __init__(self, *args, **kwargs):
         """__init__ initializes BaseModel instance attributes
+
+
         Args:
-            args (tuple): set positional parameter(s).
-            kwargs (dict): set key/value pair parameter(s)
+            *args: Variable length argument list.
+            **kwargs: Arbitrary keyword arguments.
         """
 
-        """Set the public instance if kwargs is not empty"""
         if len(kwargs) > 0:
             for (key, value) in kwargs.items():
                 if isinstance(key, datetime):
+
+                    #: str: created_at or updated_at set to datetime str
                     self[key] = datetime.strptime(
                         kwargs[key], '%Y-%m-%dT%H:%M:%S.%f'
                     )
                 elif key != '__class__':
+                    #: str: every other attributes set to str
                     setattr(self, key, value)
 
         else:
-            """Otherwise, use this default setting"""
+            #: str: id attribute set to str
             self.id = str(uuid4())
+
+            #: datetime: updated_at set to datetime obj
             self.updated_at = datetime.now()
+
+            #: datetime: created_at set to datetime obj
             self.created_at = datetime.now()
             storage.new(self)
 
-    def save(self):
-        """Update the time on instance modification"""
+    def save(self) -> None:
+        """
+        save updates the time on instance modification and save
+        an instance object to storage.
+
+        Args:
+            Required no parameter.
+
+        Returns:
+            None either successful or not.
+        """
         self.updated_at = datetime.now()
         storage.save()
 
-    def to_dict(self):
-        """Convert instance to dictionary"""
+    def to_dict(self) -> dict:
+        """
+        to_dict converts class instance to dictionary representation
+
+
+        Args:
+            Required no parameter.
+
+        Returns:
+            dict if successful, like::
+
+            {   'id': 'e792-3f34-232-000f',
+                'created_at': '2022-08-07T21:05:54.119572',
+                'updated_at': '2022-08-07T21:05:56.119241',
+                '__class__': 'BaseModel'
+            }
+
+        Raises:
+            KeyError: dict does not have to_dict.
+
+        """
         new_dict = {}
         for (key, value) in self.__dict__.items():
             if type(value) is datetime:
@@ -58,7 +89,7 @@ class BaseModel:
             new_dict['__class__'] = self.__class__.__name__
         return new_dict
 
-    def __str__(self):
+    def __str__(self) -> str:
         """Return the string representation of the instance"""
         return "[{}] ({}) {}".format(
             type(self).__name__,
