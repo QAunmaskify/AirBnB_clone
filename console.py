@@ -104,18 +104,14 @@ class HBNBCommand(cmd.Cmd):
         elif class_id == '':
             print('** instance id missing **')
         else:
-            data = storage.all()
-            for value in data.values():
-                obj_id = value.id
-                obj_name = type(value).__name__
+            try:
+                key = '{}.{}'.format(line[0], line[1])
+                data = storage.all()[key]
+                print(data)
+            except KeyError:
+                print('** no instance found **')
 
-                if id == obj_id and class_name == obj_name:
-                    print(value)
-                    return
-
-            print('** no instance found **')
-
-    def do_destroy(self, line):
+    def do_destroy(self, line) -> None:
         '''
         deletes an instance based on class name and id
 
@@ -129,8 +125,8 @@ class HBNBCommand(cmd.Cmd):
             print('** class doesn\'t exist **')
         else:
             try:
-                class_name, class_id = line[0], line[1]
-                key = '{}.{}'.format(class_name, class_id)
+                key = '{}.{}'.format(line[0], line[1])
+                storage.all()[key]
                 storage.destroy(class_name, class_id)
                 storage.save()
             except KeyError:
@@ -138,7 +134,7 @@ class HBNBCommand(cmd.Cmd):
             except IndexError:
                 print('** instance id missing **')
 
-    def do_all(self, line):
+    def do_all(self, line) -> None:
         '''
         prints all string representation of all instance based or
         or not on the class name
@@ -157,7 +153,7 @@ class HBNBCommand(cmd.Cmd):
                 result = [str(list_all[obj]) for obj in list_all]
             print(result)
 
-    def do_update(self, line):
+    def do_update(self, line) -> None:
         '''
         updates an instance based on class name and id
         by adding or updating attribute
@@ -167,7 +163,6 @@ class HBNBCommand(cmd.Cmd):
         '''
         line = line.replace('"', '')
         line = line.split(' ')
-        print(line)
         if line[0] == '':
             print('** class name missing **')
         elif line[0] not in HBNBCommand.__supported_class:
@@ -220,8 +215,8 @@ class HBNBCommand(cmd.Cmd):
     def default(self, line):
         """ Called on an input line when the command prefix is not recognised
         """
-        line = line.replace(',', '')
-        args = re.split(r'\.|\(|\)', line)
+        args = line.replace(',', '')
+        args = re.split(r'\.|\(|\)', args)
         class_name = args[0]
         method = args[1]
         if method == "all":
@@ -234,8 +229,8 @@ class HBNBCommand(cmd.Cmd):
         elif method == 'destroy':
             self.do_destroy(class_name + ' ' + args[2])
         elif method == 'update':
-            print(args[1])
-            self.do_update(class_name + ' ' + args)
+            update_args = " ".join([class_name, args[2]])
+            self.do_update(update_args)
 
     '''================================================
             Overridden docstring section
