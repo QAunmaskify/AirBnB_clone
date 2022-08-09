@@ -48,3 +48,10 @@ class TestUser(unittest.TestCase):
         result = style.check_files(['models/user.py'])
         self.assertEqual(result.total_errors, 0,
                          "Found code style errors (and warnings).")
+
+    def test_conformance_user(self):
+        """Test that we conform to PEP-8."""
+        style = pycodestyle.StyleGuide(quiet=True)
+        result = style.check_files(['tests/test_models/test_user.py'])
+        self.assertEqual(result.total_errors, 0,
+                         "Found code style errors (and warnings).")
