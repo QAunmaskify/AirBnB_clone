@@ -17,13 +17,10 @@ class HBNBCommand(cmd.Cmd):
     HBNBCommand extends Cmd. It inherits cmdloop method that
     gives prompt on every single interation.
 
-
     Attributes:
         prompt (str): name of command interpreter.
-
     """
     prompt = '(hbnb) '
-
     __supported_class = [
         'BaseModel',
         'User',
@@ -92,7 +89,6 @@ class HBNBCommand(cmd.Cmd):
 
         Args:
             line: Input argument to show command
-
 
         Returns:
             None
@@ -298,6 +294,28 @@ class HBNBCommand(cmd.Cmd):
             instance = Review()
 
         return instance
+
+
+    def create(self, class_name):
+        instance = None
+
+        if class_name == 'BaseModel':
+            instance = BaseModel()
+        elif class_name == 'User':
+            instance = User()
+        elif class_name == 'Place':
+            instance = Place()
+        elif class_name == 'Amenity':
+            instance = Amenity()
+        elif class_name == 'City':
+            instance = City()
+        elif class_name == 'State':
+            instance = State()
+        elif class_name == 'Review':
+            instance = Review()
+
+        return instance
+            
 
 
 if __name__ == '__main__':
