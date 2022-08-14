@@ -13,3 +13,14 @@ It is like other **CLI Programs** but ours is limited to a specific use-case. Wi
 **To Use HBNB Console:**  
 * Through CLI program (Git bash, powershell, etc), run **python (or py) console.py** - windows operating system.  
 Or **./console.py** - for Linux Distribution.
+* When become activated, you should see a prompt like this:  
+**(hbnb) **
+* type **help** in the prompt to see the supported commands at a glance.
+* type **help command_name** to learn what such command does.  
+
+**Example:**  
+* **./console.py**
+* **(hbnb) help**  
+Documented commands (type help <topic>):  
+*****************************************  
+EOF help quit all create show 
