@@ -1,0 +1,31 @@
+.filters {
+	display: flex;
+	align-items: center;
+	height: 70px;
+	width: 100%;
+	background-color: #ffffff;
+	border: 1px solid #dddddd;
+	border-radius: 4px;
+
+	position: relative;
+}
+
+button {
+	width: 20%;
+	height: 48px;
+	font-size: 18px;
+	background-color: #ff5a5f;
+	color: #ffffff;
+	border-radius: 4px;
+	border: none;
+	line-height: 48px;
+	transition: opacity .2s ease-in-out;
+
+	position: absolute;
+	right;
+}
+
+button:hover {
+	opacity: .9;
+	/* background-color: rgba(225, 95, 90, .9); */
+}
