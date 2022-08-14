@@ -14,7 +14,7 @@ It is like other **CLI Programs** but ours is limited to a specific use-case. Wi
 * Through CLI program (Git bash, powershell, etc), run **python (or py) console.py** - windows operating system.  
 Or **./console.py** - for Linux Distribution.
 * When become activated, you should see a prompt like this:  
-**(hbnb) **
+**(hbnb)**
 * type **help** in the prompt to see the supported commands at a glance.
 * type **help command_name** to learn what such command does.  
 
@@ -23,4 +23,12 @@ Or **./console.py** - for Linux Distribution.
 * **(hbnb) help**  
 Documented commands (type help <topic>):  
 ============================   
-EOF help quit all create show update destroy
+EOF help quit all create show update destroy  
+
+**(hbnb)** help create  
+```
+	create command creates a new instance of supported
+	class name pass as parameter to create command. ex:
+	create BaseModel
+	And save the instance to storage file.
+```
