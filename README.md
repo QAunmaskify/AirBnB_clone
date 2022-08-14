@@ -14,7 +14,7 @@ It is like other **CLI Programs** but ours is limited to a specific use-case. Wi
 * Destroy an object.
 * Do operations like counting, reading time of new entry of an object, etc.  
 
-**To Use HBNB Console:**  
+### To Use HBNB Console:  
 * Through CLI program (Git bash, powershell, etc), run **python (or py) console.py** - windows operating system.  
 Or **./console.py** - for Linux Distribution.
 * When become activated, you should see a prompt like this:  
@@ -22,7 +22,7 @@ Or **./console.py** - for Linux Distribution.
 * type **help** in the prompt to see the supported commands at a glance.
 * type **help command_name** to learn what such command does.  
 
-**Example:**  
+### Example:  
 * **./console.py**
 * **(hbnb) help**  
 Documented commands (type help <topic>):  
