@@ -1,10 +1,22 @@
 .places {
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
 	padding: 20px 10px;
 	text-align: center;
 }
 
+.places h1 {
+	flex-basis: 100%;
+}
+
 .places > article {
-	display: inline-block;
+	width: 390px;
+	padding: 20px;
+	margin: 20px;
+	border: 1px solid #ff5a5f;
+	border-radius: 4px;
+	position: relative;
 }
 
 .places h1,
