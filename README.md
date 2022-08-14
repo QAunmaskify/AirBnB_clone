@@ -25,7 +25,7 @@ Documented commands (type help <topic>):
 ============================   
 EOF help quit all create show update destroy  
 
-**(hbnb)** help create  
+* **(hbnb)** help create  
 ```
 	create command creates a new instance of supported
 	class name pass as parameter to create command. ex:
