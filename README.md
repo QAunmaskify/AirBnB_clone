@@ -11,5 +11,5 @@ It is like other **CLI Programs** but ours is limited to a specific use-case. Wi
 * Do operations like counting, reading time of new entry of an object, etc.  
 
 **To Use HBNB Console:**  
-* Through CLI program (Git bash, powershell, etc), run python (or py) console.py - windows operating system.  
-Or ./console.py - for Linux Distribution.
+* Through CLI program (Git bash, powershell, etc), run **python (or py) console.py** - windows operating system.  
+Or **./console.py** - for Linux Distribution.
