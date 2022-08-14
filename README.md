@@ -2,6 +2,8 @@
 ## Table of Contents
 1. [The Overview](#the-overview)
 2. [The Console in Action](#the-console-in-action)
+3. [How to Use HBNB Console](#to-use-hbnb-console)
+4. [Example](#example)
 ## The Overview:
 It is the first part of the whole of (AirBnB clone: Web Application) project. This first step, is necessary, entails building a minified console (like a shell) to manage the underlying data structure for the whole project in a sense of data flow and communication with **HTML/CSS templating**, **database storage**, **API**, **front-end integration** etc, which are other parts of whole project.  
 ## The Console in Action:
