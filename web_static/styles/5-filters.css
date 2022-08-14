@@ -43,6 +43,10 @@ button:hover {
 	border-right: 1px solid #dddddd;
 }
 
+h3, h4 {
+	margin-left: 20px;
+}
+
 h3 {
 	font-weight: 600;
 }
