@@ -22,5 +22,5 @@ Or **./console.py** - for Linux Distribution.
 * **./console.py**
 * **(hbnb) help**  
 Documented commands (type help <topic>):  
-*****************************************  
+======================================== 
 EOF help quit all create show 
