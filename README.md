@@ -8,4 +8,8 @@ It is like other **CLI Programs** but ours is limited to a specific use-case. Wi
 * Retrieve an object from a file, a database (from a storage mean).
 * Update attribute of an object.
 * Destroy an object.
-* Do operations like counting, reading time of new entry of an object, etc.
+* Do operations like counting, reading time of new entry of an object, etc.  
+
+**To Use HBNB Console:**  
+* Through CLI program (Git bash, powershell, etc), run python (or py) console.py - windows operating system.  
+Or ./console.py - for Linux Distribution.
