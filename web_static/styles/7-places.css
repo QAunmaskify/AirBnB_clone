@@ -1,41 +1,41 @@
 .places {
-	display: flex;
-	justify-content: center;
-	flex-wrap: wrap;
-	padding: 20px 10px;
-	text-align: center;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 20px 10px;
+  text-align: center;
 }
 
 .places h1 {
-	flex-basis: 100%;
+  flex-basis: 100%;
 }
 
 .places > article {
-	width: 390px;
-	padding: 20px;
-	margin: 20px;
-	border: 1px solid #ff5a5f;
-	border-radius: 4px;
-	position: relative;
+  width: 390px;
+  padding: 20px;
+  margin: 20px;
+  border: 1px solid #ff5a5f;
+  border-radius: 4px;
+  position: relative;
 }
 
 .places h1,
 .places h2 {
-	font-size: 30px;
+  font-size: 30px;
 }
 
 .places h1 {
-	text-align: left;
+  text-align: left;
 }
 
 .places h2 {
-	text-align: center;
+  text-align: center;
 }
 
 .places article {
-	width: 390px;
-	padding: 20px;
-	margin: 20px;
-	border: 1px solid #ff5a5f;
-	border-radius: 4px;
+  width: 390px;
+  padding: 20px;
+  margin: 20px;
+  border: 1px solid #ff5a5f;
+  border-radius: 4px;
 }

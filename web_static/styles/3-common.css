@@ -1,13 +1,12 @@
 * {
-	box-sizing: inherit;
+  box-sizing: inherit;
 }
 
-
 body {
-	box-sizing: border-box;
-	margin: 0;
-	padding: 0;
-	color: #484848;
-	font-size: 14px;
-	font-family: Circular, "Helvetica Neue", Helvetica, Arial, Sans-serif;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  color: #484848;
+  font-size: 14px;
+  font-family: Circular, "Helvetica Neue", Helvetica, Arial, Sans-serif;
 }
