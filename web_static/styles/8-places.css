@@ -1,100 +1,109 @@
 .places {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  padding: 20px 10px;
-  text-align: center;
+	padding: 20px 10px;
+    text-align: center;
+
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
 .places h1 {
-  flex-basis: 100%;
+	flex-basis: 100%;
 }
 
 .places > article {
-  width: 390px;
-  padding: 20px;
-  margin: 20px;
-  border: 1px solid #ff5a5f;
-  border-radius: 4px;
-  position: relative;
+	width: 390px;
+	padding: 20px 20px 30px;
+	margin: 20px;
+	border: 1px solid #ff5a5f;
+	border-radius: 4px;
+	position: relative;
 }
 
 .places h1,
 .places h2 {
-  font-size: 30px;
+	font-size: 30px;
 }
 
 .places h1 {
-  text-align: left;
+	text-align: left;
 }
 
 .places h2 {
-  text-align: center;
+	text-align: center;
 }
 
-.places .price_by_night {
-  color: #ff5a5f;
-  border: 4px solid #ff5a5f;
-  min-width: 60px;
-  height: 60px;
-  font-size: 30px;
-  border-radius: 50%;
-  margin: 15px;
-  padding: 0.23rem;
-  line-height: 60px;
-  box-sizing: content-box;
-  text-align: center;
 
-  position: absolute;
-  right: 0;
-  top: 0;
+.places .price_by_night {
+	  color: #ff5a5f;
+    border: 4px solid #ff5a5f;
+    min-width: 60px;
+    height: 60px;
+    font-size: 30px;
+    border-radius: 50%;
+
+    position: absolute;
+    right: 0;
+    top: 0;
+
+    margin: 15px;
+    padding: .23em;
+    line-height: 60px;
+    box-sizing: content-box;
+    text-align: center;
 }
 
 .places .information {
-  height: 80px;
-  border: 1px solid #dddddd;
-  border-left: 0;
-  border-right: 0;
-  margin-top: 60px;
-  margin-bottom: 25px;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
+	height: 80px;
+	border: 1px solid #dddddd;
+	border-left: 0;
+	border-right: 0;
+	margin-top: 60px;
+	margin-bottom: 25px;
+	
+	display: flex;
+	align-items: center;
+	justify-content: space-evenly;
 }
 
 .information > * {
-  width: 100px;
-  min-height: 85%;
-  background-repeat: no-repeat;
-  background-position: top center;
+	width: 100px;
+	min-height: 85%;
+	background-repeat: no-repeat;
+	background-position: top center;
 
-  position: relative;
+	position: relative;
 }
 
 .information p {
-  width: 100%;
-  position: absolute;
-  bottom: 0;
+	width: 100%;
+	position: absolute;
+	bottom: 0;
 }
 
 .max_guest {
-  background-image: url(../images/icon_group.png);
+	background-image: url(../images/icon_group.png);
 }
 
 .number_rooms {
-  background-image: url(../images/icon_bed.png);
+	background-image: url(../images/icon_bed.png);
 }
 
 .number_bathrooms {
-  background-image: url(../images/icon_bath.png);
+	background-image: url(../images/icon_bath.png);
 }
 
 .user,
 .description {
-  text-align: left;
+	text-align: left;
+	font-size: 16px;
+	line-height: 20px;
+}
+
+.description p:not(:last-child) {
+	margin-bottom: 10px;
 }
 
 .user {
-  margin-bottom: 10px;
+	margin-bottom: 10px;
 }
