@@ -10,7 +10,7 @@
   position: relative;
 }
 
-button {
+.filters button {
   width: 20%;
   height: 48px;
   font-size: 18px;
@@ -30,8 +30,8 @@ button:hover {
   /* background-color: rgba(225, 95, 90, .9); */
 }
 
-.locations,
-.amenities {
+.filters .locations,
+.filter .amenities {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -45,8 +45,8 @@ button:hover {
   border-right: 1px solid #dddddd;
 }
 
-h3,
-h4 {
+.filters h3,
+.filters h4 {
   margin-left: 20px;
 }
 
