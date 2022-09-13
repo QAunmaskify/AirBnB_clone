@@ -6,3 +6,4 @@ test_base_model.py
 test_save_reload_base_model.py
 file.json
 test_save_reload_user.py
+main_delete.py
