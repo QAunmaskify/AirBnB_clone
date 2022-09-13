@@ -13,7 +13,7 @@ class FileStorage:
     __file_path = 'file.json'
     __objects = {}
 
-    def all(self) -> dict:
+    def all(self, cls=None) -> dict:
         """
         Returns all stored objects (dictionary representation)
         of BaseModel instance_obj to any module that requests for
@@ -26,7 +26,13 @@ class FileStorage:
             dict
 
         """
-        return FileStorage.__objects
+        f_list = {}
+        if cls is not None:
+            for (key, value) in FileStorage.__objects.items():
+                if isinstance(value, cls):
+                    f_list[key] = value
+
+        return f_list
 
     def new(self, obj):
         """
@@ -130,3 +136,10 @@ class FileStorage:
     def destroy(self, obj_name, obj_id):
         key = obj_name + '.' + obj_id
         del (FileStorage.__objects[key])
+
+    def delete(self, obj=None):
+        if obj is not None:
+            for (key, value) in FileStorage.__objects.items():
+                if value is obj:
+                    del (FileStorage.__objects[key])
+                    break
