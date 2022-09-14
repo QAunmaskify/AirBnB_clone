@@ -26,13 +26,14 @@ class FileStorage:
             dict
 
         """
-        f_list = {}
+        collections = {}
         if cls is not None:
             for (key, value) in FileStorage.__objects.items():
                 if isinstance(value, cls):
-                    f_list[key] = value
+                    collections[key] = value
+            return collections
 
-        return f_list
+        return FileStorage.__objects
 
     def new(self, obj):
         """
